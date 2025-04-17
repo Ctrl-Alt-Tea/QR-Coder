@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using ZXing;
 using ZXing.Windows.Compatibility;
@@ -69,6 +70,37 @@ namespace QR_Coder
             else
             {
                 MessageBox.Show("No QR Code to copy. Please generate one first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (pictureBoxQRCode.Image != null)
+            {
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "PNG Image|*.png";
+                    saveFileDialog.Title = "Save QR Code";
+                    saveFileDialog.FileName = "QRCode.png"; // Default file name
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        try
+                        {
+                            // Save the QR code image to the selected file path
+                            pictureBoxQRCode.Image.Save(saveFileDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                            MessageBox.Show("QR Code saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"An error occurred while saving the file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No QR Code to save. Please generate one first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
